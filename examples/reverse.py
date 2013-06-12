@@ -16,10 +16,12 @@
 # If this weren't a demo script, there'd be a way of specifying the
 # origin for each zone instead of constructing it from the filename.
 
-import dns.zone
-import dns.ipv4
 import os.path
 import sys
+
+import dns.zone
+import dns.ipv4
+
 
 reverse_map = {}
 
@@ -28,9 +30,9 @@ for filename in sys.argv[1:]:
                               relativize=False)
     for (name, ttl, rdata) in zone.iterate_rdatas('A'):
         try:
-	    reverse_map[rdata.address].append(name.to_text())
-	except KeyError:
-	    reverse_map[rdata.address] = [name.to_text()]
+            reverse_map[rdata.address].append(name.to_text())
+        except KeyError:
+            reverse_map[rdata.address] = [name.to_text()]
 
 keys = reverse_map.keys()
 keys.sort(lambda a1, a2: cmp(dns.ipv4.inet_aton(a1), dns.ipv4.inet_aton(a2)))
